@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 
 import { serifFont, sansSerifFont, primaryColor, secondaryColor } from "./css";
 import { Renderer } from "./Renderer";
+import { Version } from "./Hud";
 
 const globalStyle: SerializedStyles = css`
     body {
@@ -82,6 +83,7 @@ export const App: React.FC = () => {
     return (
         <React.Fragment>
             <Global styles={globalStyle} />
+            <Version />
             <Renderer />
         </React.Fragment>
     );
