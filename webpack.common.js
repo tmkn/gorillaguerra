@@ -22,7 +22,7 @@ module.exports = {
     plugins: [
         new CleanWebpackPlugin(),
         new HtmlWebpackPlugin({
-            title: 'npmbomb',
+            title: 'Gorilla Guerra',
             meta: {
                 charset: { charset: 'utf-8' },
                 viewport: 'width=device-width, initial-scale=1',

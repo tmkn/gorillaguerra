@@ -1,9 +1,10 @@
 /** @jsx jsx */
 import { jsx, css, Global, SerializedStyles } from "@emotion/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 //import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import { serifFont, sansSerifFont, primaryColor, secondaryColor } from "./css";
+import { Renderer } from "./Renderer";
 
 const globalStyle: SerializedStyles = css`
     body {
@@ -78,5 +79,10 @@ const globalStyle: SerializedStyles = css`
 `;
 
 export const App: React.FC = () => {
-    return <h1>wip</h1>;
+    return (
+        <React.Fragment>
+            <Global styles={globalStyle} />
+            <Renderer />
+        </React.Fragment>
+    );
 };
