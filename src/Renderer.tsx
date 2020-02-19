@@ -5,7 +5,7 @@ var camera: THREE.PerspectiveCamera, scene: THREE.Scene, renderer: THREE.Rendere
 var geometry: THREE.Geometry, material: THREE.Material, mesh: THREE.Mesh;
 
 function init() {
-    camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.01, 10);
+    camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.01, 10);
     camera.position.z = 1;
 
     scene = new THREE.Scene();
@@ -26,6 +26,7 @@ function animate() {
 
     mesh.rotation.x += 0.01;
     mesh.rotation.y += 0.02;
+    checkViewport();
 
     renderer.render(scene, camera);
 }
@@ -37,11 +38,34 @@ function onWindowResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
+function checkViewport() {
+    camera.updateMatrix();
+    camera.updateMatrixWorld();
+    const frustum = new THREE.Frustum();
+    frustum.setFromProjectionMatrix(new THREE.Matrix4().multiplyMatrices(camera.projectionMatrix, camera.matrixWorldInverse));  
+
+    const pos = mesh.position;
+    if (!frustum.containsPoint(pos)) {
+        console.log(`outside viewport`);
+    }
+}
+
 export const Renderer: React.FC = () => {
     useEffect(() => {
         init();
         animate();
         window.addEventListener("resize", onWindowResize, false);
+        window.addEventListener("keydown", e => {
+            //console.log(`sdf`);
+            if(e.key === "d")
+                mesh.translateOnAxis(new THREE.Vector3(1, 0, 0), 0.1);
+            else if(e.key === "a")
+                mesh.translateOnAxis(new THREE.Vector3(-1, 0, 0), 0.1);
+            else if(e.key === "w")
+                mesh.translateOnAxis(new THREE.Vector3(0, 0, -1), 0.1);
+            else if(e.key === "s")
+                mesh.translateOnAxis(new THREE.Vector3(0, 0, 1), 0.1);
+        });
 
         return () => window.removeEventListener("resize", onWindowResize);
     }, []);

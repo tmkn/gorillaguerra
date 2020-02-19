@@ -2,6 +2,8 @@
 import { jsx, css, Global, SerializedStyles } from "@emotion/core";
 import React, { useState, useEffect } from "react";
 
+declare var revision: string;
+
 export const Version: React.FC = () => {
     const style = css({
         position: "absolute",
@@ -10,5 +12,5 @@ export const Version: React.FC = () => {
         right: 0
     });
 
-    return <span css={style}>todo version</span>;
+    return <span css={style}>{revision}</span>;
 };

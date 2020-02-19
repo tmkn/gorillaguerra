@@ -2,6 +2,11 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const webpack = require('webpack');
+
+const revision = require('child_process')
+  .execSync('git rev-parse --short HEAD')
+  .toString();
 
 module.exports = {
     entry: {
@@ -28,6 +33,9 @@ module.exports = {
                 viewport: 'width=device-width, initial-scale=1',
                 description: 'A reimagination of QBasic Gorillas for the web'
             },
+        }),
+        new webpack.DefinePlugin({
+            revision: JSON.stringify(revision)
         })
     ],
     output: {
