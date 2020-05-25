@@ -9,8 +9,6 @@ let monkey: THREE.Group;
 
 const loader: OBJLoader = new OBJLoader();
 
-const deg2rad = (Math.PI * 2) / 360;
-
 function init() {
     camera = new THREE.PerspectiveCamera(90, window.innerWidth / window.innerHeight, 0.01, 10);
     camera.position.z = 1;
@@ -38,15 +36,6 @@ function init() {
         onProgress => console.log(onProgress),
         error => console.log(error)
     );
-}
-
-function distanceTest() {
-    const distance = monkey.position.distanceTo(camera.position);
-    const frustumHeight = 2.0 * distance * Math.tan(camera.fov * 0.5 * deg2rad);
-    const frustumWidth = frustumHeight * camera.aspect;
-
-    console.log(`width`, frustumWidth);
-    console.log(`height`, frustumHeight);
 }
 
 function animate() {
@@ -92,11 +81,31 @@ export const Renderer: React.FC = () => {
             else if (e.key === "a") monkey.translateOnAxis(new THREE.Vector3(-1, 0, 0), 0.1);
             else if (e.key === "w") monkey.translateOnAxis(new THREE.Vector3(0, 0, -1), 0.1);
             else if (e.key === "s") monkey.translateOnAxis(new THREE.Vector3(0, 0, 1), 0.1);
+            else if (e.key === "q") monkey.translateOnAxis(new THREE.Vector3(-1, 0, 0), 1.5);
 
-            distanceTest();
+            const {height, width} = viewport(camera, 1 /*monkey.position.distanceTo(camera.position)*/);
+
+            console.log(`Height: ${height} | Width: ${width}`);
         });
 
         return () => window.removeEventListener("resize", onWindowResize);
     }, []);
     return null;
 };
+
+
+interface IViewport {
+    width: number;
+    height: number;
+}
+
+function viewport(camera: THREE.PerspectiveCamera, distance: number): IViewport {
+    const vFOV = THREE.MathUtils.degToRad( camera.fov ); // convert vertical fov to radians
+    const height = 2 * Math.tan( vFOV / 2 ) * distance; // visible height
+    const width = height * camera.aspect;           // visible width
+
+    return {
+        height,
+        width
+    }
+}
