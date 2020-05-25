@@ -7,7 +7,8 @@ declare var revision: string;
 export const Version: React.FC = () => {
     const style = css({
         position: "absolute",
-        color: "white",
+        color: "#673AB7",
+        fontFamily: "monospace",
         bottom: 0,
         right: 0
     });
